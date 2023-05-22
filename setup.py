@@ -8,6 +8,7 @@ setup(
     packages=['python-url-shortener'],
     install_requires=[
         'Flask',
-
+        'mysql-connector-python',
+        'python-dotenv'
     ],
 )
