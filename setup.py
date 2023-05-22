@@ -6,5 +6,8 @@ setup(
     author='Morgan Collens',
     description='A simple project designed to help learn the fundamentals of python. Built using both Python and Flask, this service is designed to allow a user to shorten a url and access the original URL via the shortened version.',
     packages=['python-url-shortener'],
-    install_requires=[],
+    install_requires=[
+        'Flask',
+
+    ],
 )
