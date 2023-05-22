@@ -1,0 +1,18 @@
+
+# Virtual Environment
+bin
+include
+lib
+lib64
+share
+pyvenv.cfg
+
+# IDE-specific files (e.g., PyCharm, VSCode, etc.)
+.idea/
+.vscode/
+*.pyproj
+*.iml
+*.pyc
+
+# Other
+__pycache__
