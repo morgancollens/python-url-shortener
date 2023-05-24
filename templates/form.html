@@ -1,5 +1,11 @@
-<form method="POST" action="/submit">
-    <label for="url">URL to shorten:</label>
-    <input type="text" id="url" name="url" required>
-    <button type="submit">Submit</button>
-</form>
+{% extends "index.html" %}
+{% block content %}
+  <div class="panel">
+    <form method="POST" action="/submit">
+        <label for="url">URL to shorten:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Submit</button>
+    </form>
+  </div>
+{% endblock %}
+
