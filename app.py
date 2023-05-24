@@ -34,7 +34,7 @@ def submit():
 
     insert(sql, (url, urlHash))
 
-    return "Your shortened url is " + shortenedUrl
+    return render_template('response.html', url=shortenedUrl)
 
 # Endpoint that will accept a shortened url, and use the hash to retrive the
 # original url from our database.
