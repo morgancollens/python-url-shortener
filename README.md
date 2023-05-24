@@ -7,28 +7,43 @@ the original URL through the shortened version.
 
 ## How to Use
 
-### Prerequisites
-
-#### Setup your Database
-
-First you'll need to create the table in your MySQL database which will be used to persist the original URLs
-
-```mysql
-CREATE TABLE tbl_shortened_urls(
-    urlID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    hash VARCHAR(500) NOT NULL COMMENT "The hashed key appended to the shortened url",
-    originalUrl TEXT NOT NULL COMMENT "The original URL that was shortened. Used for redirection when a user clicks the shortened version of the link",
-    INDEX (hash)
-);
-```
----
-
 ### Clone the repository
 
-First, clone the repository to your local machine
+First, clone the repository to your local machine and navigate to the directory.
 
 ```shell
-git clone git@github.com:morgancollens/python-url-shortener.git
+    git clone git@github.com:morgancollens/python-url-shortener.git
+
+    cd python-url-shortener
+```
+
+### Create your environment variables
+
+Create a `.env` file in your project, using the variables in `.env.example` as a guide.
+
+```text
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_SCHEMA=
+
+# Docker Compose
+MYSQL_ROOT_PASSWORD=
+```
+
+### Setup your Database
+
+Run the following script to setup a local MySQL database on your machine, using `docker-compose` and the credentials you've created in your `.env` file. **Note**: It's easiest in this case to set up a database
+on your local machine, and using the user of `root`, with the same `DB_PASSWORD` and `MYSQL_ROOT_PASSWORD`.
+
+```shell
+    docker-compose up
+```
+
+The following script can then be run to create the database table used by the application.
+
+```shell
+    python3 scripts.py create-db
 ```
 
 ### Setup your virtual environment
@@ -39,23 +54,17 @@ from your global python workspace
 Create the environment first...
 
 ```shell
-    pip3 -m venv ENV_DIR python-url-shortener
-```
-
-Then change directory to go to the projects root path
-
-```shell
-    cd python-url-shortener
+    pip3 -m venv environment
 ```
 
 Then activate the virtual environment...
 
 ```shell
     # On Unix
-    source bin/activate
+    source environment/bin/activate
 
     # On Windows
-    Scripts/activate
+    environment/Scripts/activate
 ```
 
 ### Install dependencies
@@ -67,7 +76,7 @@ Then activate the virtual environment...
 ### Start the application
 
 ```shell
-    python3 app.py
+    python3 scripts.py start
 ```
 
 You should now be able to access the application from `http://localhost:5000`.
