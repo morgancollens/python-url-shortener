@@ -1,9 +1,3 @@
-from dotenv import load_dotenv
-
-# Load environment variables before other imports to ensure
-# database methods have required configuration
-load_dotenv()
-
 from hashlib import sha256
 from flask import Flask, render_template, request, Response
 from db import insert, select
@@ -53,7 +47,3 @@ def redirect(hash):
     response.headers["Location"] = originalUrl
     return response
 
-
-
-if __name__ == '__main__':
-    app.run()
