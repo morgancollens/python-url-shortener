@@ -11,7 +11,11 @@
       </div>
     </header>
     <div class="container">
+      {% block error %}
+      {% endblock %}
       {% block content %}
+      {% endblock %}
+      {% block response %}
       {% endblock %}
     </div>
   </body>
