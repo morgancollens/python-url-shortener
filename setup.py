@@ -9,6 +9,8 @@ setup(
     install_requires=[
         'Flask',
         'mysql-connector-python',
-        'python-dotenv'
+        'python-dotenv',
+        'validators',
+        'redis'
     ],
 )
