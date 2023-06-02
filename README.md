@@ -80,3 +80,15 @@ Then activate the virtual environment...
 ```
 
 You should now be able to access the application from `http://localhost:5000`.
+
+---
+
+## Additional Commands
+
+### Refresh the database
+
+You can reset the database (drop the table and recreate it), by running the following...
+
+```shell
+    python3 scripts.py refresh-db
+```

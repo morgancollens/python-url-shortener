@@ -5,13 +5,12 @@ db = mysql.connector.connect(
   host=os.environ.get('DB_HOST'),
   user=os.environ.get('DB_USER'),
   password=os.environ.get('DB_PASSWORD'),
-  database=os.environ.get('DB_SCHEMA')
 )
 
 def getCursor():
     return db.cursor()
 
-def insert(sql, values):
+def insert(sql, values=()):
     cursor = getCursor()
     cursor.execute(sql, values)
 
@@ -24,7 +23,7 @@ def insert(sql, values):
     return insertId
 
 
-def select(sql, values):
+def select(sql, values=()):
     cursor = getCursor()
     cursor.execute(sql, values)
 
