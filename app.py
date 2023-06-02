@@ -1,10 +1,13 @@
+import os
+import validators
 from hashlib import sha256
 from flask import Flask, render_template, request, Response, abort, send_from_directory
 from db import insert, select
-import validators
-
+from cache import get, set, expire
 
 app = Flask(__name__)
+
+fiveMinutesInSeconds = 300
 
 # A generic method designed to handle error responses back to the client.
 def handleError(httpStatus, errorMessage):
@@ -31,9 +34,9 @@ def submit():
 
     if validators.url(url):
         sql = """
-                INSERT INTO tbl_shortened_urls(originalUrl, hash)
+                INSERT INTO `{}`.tbl_shortened_urls(originalUrl, hash)
                 VALUES(%s, %s)
-            """
+            """.format(os.environ.get('DB_SCHEMA'))
 
         baseUrl = "http://localhost:5000/"
         urlHash = sha256(str(url).encode()).hexdigest()
@@ -52,17 +55,35 @@ def submit():
 @app.route('/<hash>', methods=['GET'])
 def redirect(hash):
     sql = """
-            SELECT originalURL FROM tbl_shortened_urls
-            WHERE hash = %s
+            SELECT originalURL FROM `{}`.tbl_shortened_urls
+            WHERE hash = "{}"
             LIMIT 1
-          """
+          """.format(os.environ.get('DB_SCHEMA'), hash)
 
-    data = select(sql, (hash,))
+    cacheData = get(sql)
 
-    if len(data) != 0:
-        originalUrl = data[0][0]
+    foundInCache = cacheData != None
+
+    url = None
+    if foundInCache:
+        url = cacheData.decode('utf-8')
+    else:
+        data = select(sql)
+
+        if len(data) != 0:
+            url = data[0][0]
+
+    # If we found a url, we can respond with it to redirect the user.
+    if url != None:
+
+        # If we did not find the url within the cache, we can also set it to
+        # ensure a quicker response time on subsequent requests.
+        if foundInCache == False:
+            set(sql, url)
+            expire(sql, 300) # Five minute expiry timer
+
         response = Response(status=302)
-        response.headers["Location"] = originalUrl
+        response.headers["Location"] = url
         return response
     else:
         return handleError(404, "We could not locate an associated URL. Sorry!")
