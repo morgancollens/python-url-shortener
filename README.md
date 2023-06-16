@@ -57,7 +57,7 @@ from your global python workspace
 Create the environment first...
 
 ```shell
-    pip3 -m venv environment
+    python3 -m venv environment
 ```
 
 Then activate the virtual environment...
